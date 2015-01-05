@@ -54,15 +54,6 @@ Dir[APP_ROOT.join('app', 'helpers', '*.rb')].each { |file| require file }
 # Set up the database and models
 require APP_ROOT.join('config', 'database')
 
-RSpec.configure do |config|
-  config.include Rack::Test::Methods
-  # Will add in Rack::Test methods into the app, as part of RSpec config. See https://github.com/brynary/rack-test
-  # <$> Why are these sinatra details needed for Rspec in this environment file? Not seeing the routes otherwise - basically reading nothing inside config.ru
-  set :root, APP_ROOT.to_path
-	set :views, File.join(Sinatra::Application.root, "app", "views")
-	# </$>
-end
-
 def app
   Sinatra::Application
 end

@@ -22,3 +22,12 @@ ENV['RACK_ENV'] ||= 'test'
 # Sets environment for testing
 
 require File.expand_path("../../config/environment", __FILE__)
+
+RSpec.configure do |config|
+  config.include Rack::Test::Methods
+  # Will add in Rack::Test methods into the app, as part of RSpec config. See https://github.com/brynary/rack-test
+  # <$> Why are these sinatra details needed for Rspec in this environment file? Not seeing the routes otherwise - basically reading nothing inside config.ru
+  set :root, APP_ROOT.to_path
+	set :views, File.join(Sinatra::Application.root, "app", "views")
+	# </$>
+end
