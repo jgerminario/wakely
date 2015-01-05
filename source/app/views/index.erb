@@ -1,18 +1,56 @@
-<!-- DO NOT MODIFY -->
-<div class="container">
-  <h1>Simple Simon Says</h1>
-
-  <a id="get_color" href="#">Click Me</a>
+<!-- <% if @tweet %>
+<div style="color: pink">
+	<p><%= @tweet %></p>
 </div>
-  
-<ul id="color_me">
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-  <li></li>
-</ul>
+<% end %> -->
+<% if !@name %>
+	<a href="/auth" id="auth"><img src="imgs/twitter.png" alt="Sign in to Twitter"></a>
+<% elsif @success == "success" %>
+	<h2>Congratulations! Now get the day started!</h2>
+<% elsif @commitment %>
+	<% if @success == "failure" %>
+		<p>Good try, but you have a little further to go. Check the map and keep walking!</p>
+	<% end %>
+	<h2>You're scheduled to wake and walk by <%= @commitment.scheduled_for.day == Time.now.day ? "today" : "tomorrow" %> at <%= @commitment.scheduled_for.strftime("%l:%M %P") %></h2>
+	<form action="/checkin" id="checkin_form" method="POST">
+    <input type="submit" id="checkin_input" value="Check in">
+		<input id="checkin_lat" name="latitude" type="hidden">
+		<input id="checkin_lon" name="longitude" type="hidden">
+	</form>
+	<% if @commitment.scheduled_for <= Time.now + 60*60 %><!-- one hour before -->
+		<h3>Time to get up and start the day!</h3>
+	<% else %>
+		<p>You can delete and reschedule up until one hour before your scheduled time:</p>
+		<form action="/commitment" method="POST">
+		  <input type="hidden" name="_method" value="DELETE">
+	    <input type="submit" id="delete_commitment" value="Delete scheduled wake up">
+		</form>
+	<% end %>
+<% else %>
+	<p>Hi <%= @name %></p>
+	<form action="/commitment" method="POST">
+	<h3>When do you want to wake up <%= Time.now.hour > 9 ? "tomorrow" : 
+	  "today" %>?</h3>
+		<div id="time">
+		<label>Time:</label>
+		<input type="text" class="time" name="hour" placeholder="HH" value="5" />:<input type="text" class="time" type="text" name="minute" placeholder="MM" value="00" / >
+		<input id="ampm_input" name="ampm" type="hidden" value="am">
+		<button type="button" id="ampm" value="am">am</button>
+		</div>
+	<h3>How long do you want to walk?</h3>
+		<div id="info"></div>
+		<div id="map"></div>
+	<h3>What do you want to say if you are unsuccessful?</h3>
+		<label>Tweet:</label>
+		<textarea id="tweettextarea" name="tweet" ></textarea><br />
+		<input id="distance-input" name="distance" type="hidden">
+		<input id="position-input" name="position" type="hidden">
+		<input type="submit" value="Submit">
+		<p class="counter">140</p>
+	</form>
+	<h2>Your current location is</h2>
+	<div id="location">
+	</div>
+	<div id="message">Please click to allow geo location</div>
+
+<% end %>
