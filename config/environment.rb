@@ -38,9 +38,11 @@ APP_NAME = APP_ROOT.basename.to_s
 
 configure do
 	ActiveRecord::Base.default_timezone = :local
-	REDISTOGO_URL = "redis://localhost:6379/"
-	uri = URI.parse(REDISTOGO_URL)
-	REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
+	# REDISTOGO_URL = "redis://localhost:6379/"
+	# uri = URI.parse(REDISTOGO_URL)
+	# REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
+	#TODO - ensure this is set up
+
 	#What is the best way to actually do this? huge pain...
 end
 
