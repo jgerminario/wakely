@@ -51,7 +51,7 @@ configure	:development do
 end
 
 configure :production do
-	CALLBACK_URL = "http://wakely.herokuapp.com"
+	CALLBACK_URL = "http://wakely.herokuapp.com/callback"
 end
 
 # Set up the controllers and helpers
