@@ -1,6 +1,8 @@
-# Log queries to STDOUT in development
+
 if Sinatra::Application.development?
+
   ActiveRecord::Base.logger = Logger.new(STDOUT)
+  #Logs database queries (the SQL stuff you see)
 end
 
 # Automatically load every file in APP_ROOT/app/models/*.rb, e.g.,
@@ -26,6 +28,7 @@ end
 db = URI.parse(ENV['DATABASE_URL'] || "postgres://localhost/#{APP_NAME}_#{Sinatra::Application.environment}")
 
 DB_NAME = db.path[1..-1]
+# Will set the db path to "wakely_development" instead of "/wakely_development". The db URL above is used by postgres 
 
 # Note:
 #   Sinatra::Application.environment is set to the value of ENV['RACK_ENV']
