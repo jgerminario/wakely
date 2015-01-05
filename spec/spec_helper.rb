@@ -1,6 +1,10 @@
 require 'rubygems'
 require 'capybara/rspec'
 require 'rack/test'
+require 'shoulda-matchers'
+require 'capybara'
+require 'capybara-webkit'
+require 'cucumber'
  
 # require 'app'
 

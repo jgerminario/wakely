@@ -24,14 +24,6 @@ require 'sidekiq'
 require 'redis'
 require 'clockwork'
 
-require 'shoulda-matchers'
-require 'rack/test'
-require 'capybara/rspec'
-require 'capybara'
-require 'capybara-webkit'
-require 'rubygems'
-require 'cucumber'
-
 require 'sinatra'
 require "sinatra/reloader" if development?
 
