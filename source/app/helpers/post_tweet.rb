@@ -23,25 +23,7 @@ CALLBACK_URL = "http://dev.wake.ly:3000/callback"
 		pp env
 	end
 
-	# def load_yaml
-	# 	YAML.load_file(CONFIG_PATH)["twitter"]
-	# end
-
-	# def get_twitter_keys
-	# 	keys = {}
-	# 	if ENV['TWITTER_KEY']
-	# 		keys = YAML.load_file(CONFIG_PATH)["twitter"]
-	#   else
-	#   	keys["consumer_key"] = HelperUtils.guid_generator(25)
-	#     keys["consumer_secret"] = HelperUtils.guid_generator(50)
-	#     # keys["access_token"] = HelperUtils.guid_generator(50)
-	#     # keys["access_secret"] = HelperUtils.guid_generator(45)
-	#   end
-	#   keys
- #  end
-
   def twitter_consumer_key
-  	# keys = get_twitter_keys
   	see_env
   	p ENV["TWITTER_KEY"]
   	if ENV["TWITTER_KEY"].nil? || ENV["TWITTER_SECRET"].nil?
@@ -113,8 +95,7 @@ CALLBACK_URL = "http://dev.wake.ly:3000/callback"
 	def background_tweet_poster(id, tweet)
 		access_token = get_access_token_by_user_id(id)
   	response = access_token.post("https://api.twitter.com/1.1/statuses/update.json", {status: tweet})
-  	info = JSON.parse(response.body)
-  	info["id"]
+  	JSON.parse(response.body)
 	end
 
   def access_token(oauth_token, oauth_token_secret)

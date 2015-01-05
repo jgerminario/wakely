@@ -1,14 +1,14 @@
 # config.ru is the runner file that can be used by rackup (the default for Rack) or any other interface. 
 
-require 'sidekiq'
+#require 'sidekiq'
 
-Sidekiq.configure_client do |config|
-  config.redis = { :size => 1 }
-end
+# Sidekiq.configure_client do |config|
+#  config.redis = { :size => 1 }
+#end
 # this doesn't work to get routes/admin support
 
-require 'sidekiq/web'
-run Sidekiq::Web
+#require 'sidekiq/web'
+#run Sidekiq::Web
 
 # run Rack::URLMap.new('/' => Sinatra::Application, '/sidekiq' => Sidekiq::Web)
 

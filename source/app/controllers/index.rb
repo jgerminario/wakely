@@ -1,12 +1,6 @@
 # enable :sessions
 use Rack::Flash
 
-get '/hello' do
-	@str = ""
-	Authorization.all.each {|auth| @str << auth.username + " "}
-	@str
-end
-
 get '/' do
 	if session[:access_token]
 		@name = Authorization.find_by(platform: "twitter", access_token: session[:access_token].params[:oauth_token]).username

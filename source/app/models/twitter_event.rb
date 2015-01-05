@@ -9,14 +9,22 @@ class TwitterEvent < ActiveRecord::Base
 
 	def post
 		# code for cron job
-		  posted_id = Twitter.background_tweet_poster(self.user.id, self.tweet)
-			self.posted_on_twitter_at = Time.now
-			p self.twitter_id = posted_id
-			self.save!
+			pp response = Twitter.background_tweet_poster(self.user.id, self.tweet)
+		  if response["id"].nil?
+		  	# p "errors:"
+		  	# TODO: Logging here
+		  	# pp response[:errors]
+		  	return false
+		  else
+				self.posted_on_twitter_at = Time.now
+				self.twitter_id = response["id"]
+				self.save!
+				return true
+			end
 	end
 
-	def check_if_deleted(scan=false)
-		# code for cron job
-		self.deleted_from_twitter_at = Time.now if scan == true
-	end
+	# def check_if_deleted(scan=false)
+	# 	# code for cron job
+	# 	self.deleted_from_twitter_at = Time.now if scan == true
+	# end
 end

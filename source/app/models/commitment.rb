@@ -13,8 +13,9 @@ class Commitment < ActiveRecord::Base
 		def process_commitments
 			commitment = check_if_overdue
 			if commitment
-				commitment.twitter_event.post
-				commitment.record_unverified
+				if commitment.twitter_event.post
+					commitment.record_unverified
+				end
 			end
 		end
 
