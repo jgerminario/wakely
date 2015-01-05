@@ -31,3 +31,5 @@ RSpec.configure do |config|
 	set :views, File.join(Sinatra::Application.root, "app", "views")
 	# </$>
 end
+
+Capybara.app = app
