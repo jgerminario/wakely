@@ -7,7 +7,7 @@ require 'yaml'
 module Twitter
 
 CONFIG_PATH = File.expand_path("../../../config/auth.yaml", __FILE__)
-CALLBACK_URL = "http://dev.wake.ly:3000/callback"
+
 
 	extend self
 

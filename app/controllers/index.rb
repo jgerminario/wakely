@@ -48,7 +48,7 @@ end
 get '/auth' do
 	clear_existing_cookies # may need to clear cookies in case of errors
 	session[:request_token] = Twitter.get_request_token
-	redirect session[:request_token].authorize_url(oauth_callback: Twitter::CALLBACK_URL)
+	redirect session[:request_token].authorize_url(oauth_callback: CALLBACK_URL)
 end
 
 get '/callback' do

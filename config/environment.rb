@@ -46,6 +46,14 @@ configure do
 	#What is the best way to actually do this? huge pain...
 end
 
+configure	:development do
+	CALLBACK_URL = "http://dev.wake.ly:3000/callback"
+end
+
+configure :production do
+	CALLBACK_URL = "http://wakely.herokuapp.com"
+end
+
 # Set up the controllers and helpers
 Dir[APP_ROOT.join('app', 'models', 'workers', '*.rb')].each { |file| require file }
 Dir[APP_ROOT.join('app', 'controllers', '*.rb')].each { |file| require file }
@@ -57,5 +65,6 @@ require APP_ROOT.join('config', 'database')
 def app
   Sinatra::Application
 end
+
 
 
