@@ -26,7 +26,8 @@ class LocationCheckin < ActiveRecord::Base
 	end
 
 	def check_validity
-		distance_travelled = self.distance_from([self.location_verification.latitude, self.location_verification.longitude])
+		miles_traveled = self.distance_from([self.location_verification.latitude, self.location_verification.longitude])
+		meters_traveled = LocationUtils.to_meters(miles_traveled)
 		expected_distance = self.location_verification.distance_in_meters
 		if distance_travelled >= expected_distance
 			self.validity = true

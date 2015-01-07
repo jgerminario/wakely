@@ -8,6 +8,10 @@ module LocationUtils
 	TO_MILES_CONV = 0.000621371
 	TO_METERS_CONV = 1609.34
 
+	def self.to_meters(num)
+		(num.to_f * TO_METERS_CONV).round
+	end
+
 	def to_meters
 		meters = {}
 		meters[:latitude] = self[:latitude] * TO_METERS_CONV
