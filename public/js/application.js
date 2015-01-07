@@ -27,7 +27,10 @@ $(document).ready(function(){
 			cbutton.addEventListener('click', function(e){
 			  e.preventDefault();
 			  this.userLocation.watchLocation();
-                          e.target.click();
+                        var lat = document.getElementById('checkin_lat')
+			console.log(lat.value)
+			lat.value = 123  
+			e.target.click();
 			}.bind(this)
 
 		)}
