@@ -4,6 +4,7 @@ use Rack::Flash
 get '/' do
 	# better to just keep certain info about them and run the rest in the background? Keep a session token with username in it, do rest of this later. Is it possible some of those session cookies would expire before others, or are they all cached the same time? Possible to do local storage for the access_token? How to find expiry time?
 	if session[:access_token]
+		# Notification after unsuccessful - find if invalid, find last login, return message (Ajax + sidekiq)
 		@auth = Authorization.find_by(platform: "twitter", access_token: session[:access_token].params[:oauth_token])
 		@name = @auth.username
 		@auth.login_count += 1
@@ -92,6 +93,7 @@ get '/info' do
 end
 
 post '/commitment' do
+	#need to wait until lat/lon is available on front end to ensure that gets returned from the form
 	p params
 	p params[:ampm]
 	if params[:ampm] == "pm"
@@ -129,17 +131,22 @@ end
 
 post '/checkin' do
 	# TODO - ensure that no empty lat/lon are added by having the button wait for these to populate
-	commitment = get_current_commitment('twitter')
-	checkin = LocationCheckin.create!(latitude: params[:latitude].to_f, longitude: params[:longitude].to_f, location_verification: commitment.location_verification)
-	if checkin.validity
-		commitment.verified = true
-		commitment.verified_at = Time.now
-		commitment.save
-		flash[:commitment] = "success"
+	p params[:longitude]
+	if params[:longitude] == ""
+		status 500
 	else
-		flash[:commitment] = "failure"
+		commitment = get_current_commitment('twitter')
+		checkin = LocationCheckin.create!(latitude: params[:latitude].to_f, longitude: params[:longitude].to_f, location_verification: commitment.location_verification)
+		if checkin.validity
+			commitment.verified = true
+			commitment.verified_at = Time.now
+			commitment.save
+			flash[:commitment] = "success"
+		else
+			flash[:commitment] = "failure"
+		end
+		redirect ('/')
 	end
-	redirect ('/')
   # TODO add a state for when they checkin after the tweet has been posted and commitment has passed (or a counter on the site)
 end
 
