@@ -27,7 +27,7 @@ $(document).ready(function(){
 			cbutton.addEventListener('click', function(e){
 			  e.preventDefault();
 			  this.userLocation.watchLocation();
-                          e.target.parentNode.submit();
+                          e.target.click();
 			}.bind(this)
 
 		)}
