@@ -75,6 +75,7 @@ UserLocation.prototype = {
 		else {
 			console.log(this.lat, this.lon);
 			this.outputCoords(this.lat, this.lon);
+			document.getElementById("checkin_form").submit();			
 		}
 		// this.showInMap(position.coords.latitude + "," + position.coords.longitude);
 	},

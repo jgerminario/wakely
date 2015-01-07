@@ -21,16 +21,11 @@ $(document).ready(function(){
 			this.userLocation.getLocation();
 		}
 		this.checkGeoLocationConsent();
-		var checkin = document.getElementById('checkin_form');
 		var cbutton = document.getElementById('checkin_input');
-		if (checkin){
+		if (cbutton){
 			cbutton.addEventListener('click', function(e){
 			  e.preventDefault();
 			  this.userLocation.watchLocation();
-                        var lat = document.getElementById('checkin_lat')
-			console.log(lat.value)
-			lat.value = 123  
-			e.target.click();
 			}.bind(this)
 
 		)}
