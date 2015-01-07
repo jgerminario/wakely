@@ -129,7 +129,10 @@ end
 
 post '/checkin' do
 	# TODO - ensure that no empty lat/lon are added by having the button wait for these to populate
-	commitment = get_current_commitment('twitter')
+        if params[:longitude] == ""
+	  status 500
+        end
+        commitment = get_current_commitment('twitter')
 	checkin = LocationCheckin.create!(latitude: params[:latitude].to_f, longitude: params[:longitude].to_f, location_verification: commitment.location_verification)
 	if checkin.validity
 		commitment.verified = true
