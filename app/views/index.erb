@@ -17,10 +17,10 @@
 		<input id="checkin_lat" name="latitude" type="hidden">
 		<input id="checkin_lon" name="longitude" type="hidden">
 	</form>
-	<% if @commitment.scheduled_for <= Time.now + 60*60 %><!-- one hour before -->
+	<% if @commitment.scheduled_for <= Time.now + 60*60*3 %><!-- 3 hours before -->
 		<h3>Time to get up and start the day!</h3>
 	<% else %>
-		<p>You can delete and reschedule up until one hour before your scheduled time:</p>
+		<p>You can delete and reschedule up until three hours before your scheduled wakeup time:</p>
 		<form action="/commitment" method="POST">
 		  <input type="hidden" name="_method" value="DELETE">
 	    <input type="submit" id="delete_commitment" value="Delete scheduled wake up">
