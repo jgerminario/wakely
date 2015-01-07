@@ -81,6 +81,9 @@ UserLocation.prototype = {
 	outputCoords: function(lat,lon) {
 		document.getElementById("checkin_lat").value = lat;
 		document.getElementById("checkin_lon").value = lon;
+                console.log("hey")
+		console.log(this.lat);
+		console.log(document.getElementById("checkin_lon").value);
 	},
 	showError: function(error) {
 		// switch(*.code) will read the code of the error to see what gets returned
