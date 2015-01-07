@@ -46,7 +46,7 @@ UserLocation.prototype = {
    		maximumAge: 1000
 		};
 		var self = this;
-		navigator.geolocation.watchPosition(function(position) 
+		navigator.geolocation.getCurrentPosition(function(position) 
 			{
 				self.showPosition(position, "checkin");
 			}.bind(this), this.showError.bind(this),geoOptions);

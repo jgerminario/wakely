@@ -21,9 +21,16 @@ $(document).ready(function(){
 			this.userLocation.getLocation();
 		}
 		this.checkGeoLocationConsent();
-		if (document.getElementById('checkin_form')){
-			this.userLocation.watchLocation();
-		}
+		var checkin = document.getElementById('checkin_form');
+		var cbutton = document.getElementById('checkin_input');
+		if (checkin){
+			cbutton.addEventListener('click', function(e){
+			  e.preventDefault();
+			  this.userLocation.watchLocation();
+                          e.target.parentNode.submit();
+			}.bind(this)
+
+		)}
 	};
 
 	var Model = function(){
