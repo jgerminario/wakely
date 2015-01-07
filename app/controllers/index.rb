@@ -129,6 +129,7 @@ end
 
 post '/checkin' do
 	# TODO - ensure that no empty lat/lon are added by having the button wait for these to populate
+        p params
         if params[:longitude] == ""
 	  status 500
         end
