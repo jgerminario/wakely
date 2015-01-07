@@ -7,7 +7,7 @@ class LocationCheckin < ActiveRecord::Base
 	validates :latitude, presence: true	
 	reverse_geocoded_by :latitude, :longitude
 
-	before_validation :check_validity, on: :create
+	before_create :check_validity #, on: :create
 
 	def longitude
 		read_attribute(:longitude).round(6)
@@ -26,8 +26,8 @@ class LocationCheckin < ActiveRecord::Base
 	end
 
 	def check_validity
-		miles_traveled = self.distance_from([self.location_verification.latitude, self.location_verification.longitude])
-		meters_traveled = LocationUtils.to_meters(miles_traveled)
+		miles_travelled = self.distance_from([self.location_verification.latitude, self.location_verification.longitude])
+		distance_travelled = LocationUtils.to_meters(miles_travelled)
 		expected_distance = self.location_verification.distance_in_meters
 		if distance_travelled >= expected_distance
 			self.validity = true

@@ -5,22 +5,21 @@ describe LocationVerification do
 		@location_params = {
 			latitude: 37.754723,
 			longitude: -122.421447,
-			distance_in_meters: 1000
+			distance_in_meters: 1000,
+			commitment: Commitment.new
 		}
+		@location = LocationVerification.create(@location_params)
 		@checkin1_params = {
 			latitude: 37.753408,
-			longitude: -122.423127
+			longitude: -122.423127,
+			location_verification: @location
 		}
 		@checkin2_params = {
 			latitude: 45.753408,
 			longitude: -100.423127
 		}
-		@location = LocationVerification.new(@location_params)
-		@location.commitment = Commitment.new
-		@location.save
 		@checkin_location1 = LocationCheckin.new(@checkin1_params)
 		@checkin_location2 = LocationCheckin.new(@checkin2_params)
-		@location.location_checkins << @checkin_location1
 		@location.location_checkins << @checkin_location2
 	end
 
@@ -37,6 +36,7 @@ describe LocationVerification do
 		expect(@location.distance_in_meters).to eq (@location_params[:distance_in_meters])
 	end
 
+
 	it "verifications should require latitude, longitude and distance" do
 		expect{ LocationVerification.create(@location_params[:latitude], @location_params[:longitude]) }.to raise_error
 		expect{ LocationVerification.create(@location_params[:latitude], @location_params[:distance_in_meters]) }.to raise_error
@@ -47,8 +47,8 @@ describe LocationVerification do
 		expect{ LocationCheckin.create(@checkin1_params[:latitude]) }.to raise_error
 		expect{ LocationCheckin.create(@checkin1_params[:longitude]) }.to raise_error
 		checkin3 = LocationCheckin.new(@checkin1_params)
+		checkin3.location_verification = nil
 		expect(checkin3.valid?).to be_falsey
-		checkin3.errors
 	end
 
 	it "checkins should have location verifications" do
@@ -66,11 +66,18 @@ describe LocationVerification do
 	it "should be invalid if the checkin point is still within the radius" do
 		expect(@checkin_location1.validity).to_not be_truthy
 	end
-	it "should validate that verifications belong to a commitment" do
+	
+	it "should validate that valid verifications are valid" do
 		location = LocationVerification.new(@location_params)
-		expect(location.valid?).to be_falsey
 		location.commitment = Commitment.new
 		expect(location.valid?).to be_truthy
+	end
+
+	it "should validate that verifications belong to a commitment" do
+		location = LocationVerification.new(@location_params)
+		location.commitment = nil
+		location.save
+		expect(location.valid?).to be_falsey
 	end
 end
 
@@ -214,7 +221,7 @@ describe "events and authorizations" do
 				let(:rack_params){ {} }
 			  let(:rack_session) { { 'rack.session' => {access_token: @access_token } } }
 
-				it "should create a new database item log in and reauthorizations for new items" do
+				xit "should create a new database item log in and reauthorizations for new items" do
 					# get '/users/new', rack_params, rack_session
 					p Authorization.all
 					expect(Authorization.find_by(access_secret: @params[:access_secret])).to be_a Authorization

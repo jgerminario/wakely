@@ -1,10 +1,10 @@
 require 'rubygems'
-require 'capybara/rspec'
+# require 'capybara/rspec'
 require 'rack/test'
-require 'shoulda-matchers'
-require 'capybara'
-require 'capybara-webkit'
-require 'cucumber'
+# require 'shoulda-matchers'
+# require 'capybara'
+# require 'capybara-webkit'
+# require 'cucumber'
  
 # require 'app'
 
@@ -28,8 +28,8 @@ RSpec.configure do |config|
   # Will add in Rack::Test methods into the app, as part of RSpec config. See https://github.com/brynary/rack-test
   # <$> Why are these sinatra details needed for Rspec in this environment file? Not seeing the routes otherwise - basically reading nothing inside config.ru
   set :root, APP_ROOT.to_path
-	set :views, File.join(Sinatra::Application.root, "app", "views")
+	# set :views, File.join(Sinatra::Application.root, "app", "views")
 	# </$>
 end
 
-Capybara.app = app
+# Capybara.app = app

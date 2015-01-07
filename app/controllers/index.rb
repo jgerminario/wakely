@@ -2,10 +2,14 @@
 use Rack::Flash
 
 get '/' do
+	# better to just keep certain info about them and run the rest in the background? Keep a session token with username in it, do rest of this later. Is it possible some of those session cookies would expire before others, or are they all cached the same time? Possible to do local storage for the access_token? How to find expiry time?
 	if session[:access_token]
-		@name = Authorization.find_by(platform: "twitter", access_token: session[:access_token].params[:oauth_token]).username
+		@auth = Authorization.find_by(platform: "twitter", access_token: session[:access_token].params[:oauth_token])
+		@name = @auth.username
+		@auth.login_count += 1
+		# implement a 'last-login'
+		@auth.save!
 		@commitment = get_current_commitment("twitter")
-		@commitment
 		@success = flash[:commitment]
 	end
 	# flash[:tweet] #doesn't work, debug
@@ -22,6 +26,7 @@ end
 # end
 
 get '/at' do
+	p session[:request_token]
 	p session[:access_token]
 	redirect '/'
 end
@@ -124,10 +129,8 @@ end
 
 post '/checkin' do
 	# TODO - ensure that no empty lat/lon are added by having the button wait for these to populate
-	checkin = LocationCheckin.new(latitude: params[:latitude].to_f, longitude: params[:longitude].to_f)
 	commitment = get_current_commitment('twitter')
-	checkin.location_verification = commitment.location_verification
-	checkin.save!
+	checkin = LocationCheckin.create!(latitude: params[:latitude].to_f, longitude: params[:longitude].to_f, location_verification: commitment.location_verification)
 	if checkin.validity
 		commitment.verified = true
 		commitment.verified_at = Time.now

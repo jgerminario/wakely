@@ -20,14 +20,17 @@ require 'logger'
 require 'geocoder'
 require 'rack-flash'
 
+
 require 'sidekiq'
 require 'redis'
 require 'clockwork'
+
 
 require 'sinatra'
 require "sinatra/reloader" if development?
 
 require 'erb'
+
 
 # Some helper constants for path-centric logic
 APP_ROOT = Pathname.new(File.expand_path('../../', __FILE__))
@@ -48,6 +51,7 @@ end
 
 configure	:development do
 	CALLBACK_URL = "http://dev.wake.ly:3000/callback"
+	ENV["REDISTOGO_URL"] = "redis://redistogo:1c06f8d364e16f3b2306c6e05933d475@mummichog.redistogo.com:9875/"
 end
 
 configure :production do
