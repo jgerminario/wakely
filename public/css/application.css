@@ -1,3 +1,29 @@
+body {
+    font-family: 'Lato', sans-serif;
+    font-size: 100%;
+}
+/* Common elements */
+
+.loading {
+    display: inline-block;
+    margin: 0 auto;
+    vertical-align: middle;
+    text-align: center;
+    width: 100%
+}
+.loading h3 {
+
+}
+.loading img {
+    display: block;
+    margin: 0 auto;
+}
+
+/* Home page */
+.home {
+    
+}
+
 .container {
     margin: 20px auto;
     width: 600px;
@@ -14,7 +40,7 @@ header {
 	height:200px;
 }
 #message {
-		display: none;
+	display: none;
     position: fixed;
     background: turquoise;
     padding: 10px;
@@ -24,7 +50,7 @@ header {
 }
 
 #message.chrome {
-		top:0;
+    top: 0;
     width: 100%;
     height: 40px;
     text-align: right;

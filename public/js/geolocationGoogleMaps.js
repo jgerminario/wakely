@@ -63,15 +63,18 @@ UserLocation.prototype = {
 	loadGoogleMapScript: function (test) {
 		var script = document.createElement('script');
 		if (test == "initial"){
-			script.src = "http://maps.googleapis.com/maps/api/js?sensor=false&callback=init";
+			// script.src = "http://maps.googleapis.com/maps/api/js?sensor=false&callback=init";
+			this.googleMapInit("initial");
 			document.body.appendChild(script);
 		}
 		else {
 			if (this.localMap) {
 				this.marker.setPosition(new google.maps.LatLng(this.lat, this.lon));
 			}
-			else {
-			script.src = "http://maps.googleapis.com/maps/api/js?sensor=false&callback=init_checkin";
+			else if (test == "checkinWatch") {
+				console.log("hey ma")
+			// script.src = "http://maps.googleapis.com/maps/api/js?sensor=false&callback=init_checkin";
+			this.googleMapInit("checkinWatch")
 			document.body.appendChild(script);
 			}
 
@@ -162,7 +165,7 @@ UserLocation.prototype = {
 		this.localMap = new google.maps.Map(document.getElementById('map'), mapOptions);
 		var location = new google.maps.LatLng(lat, lon);
 
-		if (type == "checkin"){
+		if (type == "checkinWatch"){
 		  var circle = new google.maps.Circle({
       strokeColor: '#FF0000',
       strokeOpacity: 0.8,

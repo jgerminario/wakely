@@ -5,7 +5,9 @@
 		//Map is a constructure for google maps
 	}
 	function init_checkin (){
+		console.log("before")
 		controller.userLocation.googleMapInit("checkin");
+		console.log("after")
 	}
 	// how to make this a class function instead of a global one? and why does this need to be outside of the $(document).ready call?
 
@@ -27,12 +29,10 @@ $(document).ready(function(){
 		this.cbutton = document.getElementById('checkin_input');
 		// console.log(this.cbutton);
 		if (this.cbutton){
-				console.log("testtest")
 				this.inputSubmitListener();
 			}
 		if (document.getElementById('checkin_form')){
 			setInterval(function(){
-				console.log(this)
 				this.userLocation.watchLocation();
 			}.bind(this), 3000)
 		}
