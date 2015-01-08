@@ -22,12 +22,10 @@ UserLocation.prototype = {
 	     		maximumAge: 40000
 	  		};
   		}
-  		console.log(type)
 
   		var self = this;
 			navigator.geolocation.getCurrentPosition(function(position) 
 				{
-					console.log(type)
 					self.showPosition(position, type);
 				}.bind(this), self.showError.bind(this),geoOptions);
 				// need to bind because otherwise these uncalled functions will get bound to navigator, which ends up tied to the window object, giving us error when we call 'showInMap' in 'showPosition'
@@ -53,7 +51,7 @@ UserLocation.prototype = {
 	watchLocation: function(){
 		var geoOptions = {
    		timeout: 30000,
-   		maximumAge: 5000,
+   		maximumAge: 3000,
    		enableHighAccuracy: true
 		};
 		var self = this;
@@ -93,15 +91,16 @@ UserLocation.prototype = {
 		this.lat = position.coords.latitude;
 		this.lon = position.coords.longitude;
 		console.log (this.lat + " " + this.lon)
+		console.log(test)
 		if (test == "initial" || test == "checkinWatch"){
 			this.loadGoogleMapScript(test);
 		}
-		else if (test == "checkinWatch") {
+		if (test == "checkinWatch") {
 			console.log(this.lat, this.lon);
 			console.log(position.coords.accuracy);
 			this.outputCoords(this.lat, this.lon);
 		}
-		else {
+		if (test == "checkin") {
 			console.log(this.lat, this.lon);
 			console.log(position.coords.accuracy);
 			this.outputCoords(this.lat, this.lon);
@@ -112,8 +111,6 @@ UserLocation.prototype = {
 	outputCoords: function(lat,lon) {
 		document.getElementById("checkin_lat").value = lat;
 		document.getElementById("checkin_lon").value = lon;
-                console.log("hey")
-		console.log(this.lat);
 		console.log(document.getElementById("checkin_lon").value);
 	},
 	showError: function(error) {

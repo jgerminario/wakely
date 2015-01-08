@@ -57,6 +57,10 @@ get '/auth' do
 end
 
 get '/callback' do
+	if status 401
+		p "YO BROTHER"
+		redirect '/'
+	end
 	# TODO: debug logout issue with twitter authorizations 401
 	session[:access_token] = session[:request_token].get_access_token(:oauth_verifier => params[:oauth_verifier])
 	session[:access_token]

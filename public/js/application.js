@@ -21,7 +21,6 @@ $(document).ready(function(){
 			document.getElementById('ampm').addEventListener('click', this.ampmListener);
 		}
 		if (document.getElementById('tweettextarea')){
-			console.log("testtestts")
 			this.defaults();
 			this.userLocation.getLocation("initial");
 		}
@@ -32,7 +31,10 @@ $(document).ready(function(){
 				this.inputSubmitListener();
 			}
 		if (document.getElementById('checkin_form')){
-			this.userLocation.watchLocation();
+			setInterval(function(){
+				console.log(this)
+				this.userLocation.watchLocation();
+			}.bind(this), 3000)
 		}
 	};
 
