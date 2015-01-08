@@ -8,6 +8,8 @@
 <% elsif @success == "success" %>
 	<h2>Congratulations! Now get the day started!</h2>
 <% elsif @commitment %>
+		<input id="v_lat" type="hidden" value="<%= @commitment.location_verification.latitude %>">
+		<input id="v_lon" type="hidden" value="<%= @commitment.location_verification.longitude %>">
 	<% if @success == "failure" %>
 		<p>Good try, but you have a little further to go. Check the map and keep walking!</p>
 	<% end %>
@@ -19,12 +21,14 @@
 	</form>
 	<% if @commitment.scheduled_for <= Time.now + 60*60 %><!-- one hour before -->
 		<h3>Time to get up and start the day!</h3>
+		<div id="map"></div>
 	<% else %>
 		<p>You can delete and reschedule up until one hour before your scheduled time:</p>
 		<form action="/commitment" method="POST">
 		  <input type="hidden" name="_method" value="DELETE">
 	    <input type="submit" id="delete_commitment" value="Delete scheduled wake up">
 		</form>
+		<div id="map"></div>
 	<% end %>
 <% else %>
 	<p>Hi <%= @name %></p>

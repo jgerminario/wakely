@@ -1,8 +1,11 @@
 	//Next step: get the lat and lon as variables available on the global scope so init can access them and use
 	function init (){
-		controller.userLocation.googleMapInit();
+		controller.userLocation.googleMapInit("initial");
 		//how to debug errors and this for example above?
 		//Map is a constructure for google maps
+	}
+	function init_checkin (){
+		controller.userLocation.googleMapInit("checkin");
 	}
 	// how to make this a class function instead of a global one? and why does this need to be outside of the $(document).ready call?
 
@@ -13,14 +16,21 @@ $(document).ready(function(){
 		this.view = args.view;
 		this.model = args.model;
 		this.userLocation = new UserLocation();
+		this.checkGeoLocationConsent();
 		if (document.getElementById('ampm')){
 			document.getElementById('ampm').addEventListener('click', this.ampmListener);
 		}
 		if (document.getElementById('tweettextarea')){
+			console.log("testtestts")
 			this.defaults();
-			this.userLocation.getLocation();
+			this.userLocation.getLocation("initial");
 		}
-		this.checkGeoLocationConsent();
+		this.cbutton = document.getElementById('checkin_input');
+		// console.log(this.cbutton);
+		if (this.cbutton){
+				console.log("testtest")
+				this.inputSubmitListener();
+			}
 		if (document.getElementById('checkin_form')){
 			this.userLocation.watchLocation();
 		}
@@ -65,6 +75,12 @@ $(document).ready(function(){
 		getLength: function () {
 			var len = $('#tweettextarea').val().length;
 			$('.counter').text((140-len));
+		},
+		inputSubmitListener: function () {
+			this.cbutton.addEventListener('click', function(e){
+			  e.preventDefault();
+			  this.userLocation.getLocation("checkin");
+			}.bind(this));
 		},
 		sendTweet: function () {
 

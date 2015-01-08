@@ -7,17 +7,28 @@ var UserLocation = function () {
 };
 
 UserLocation.prototype = {
-	getLocation: function() {
+	getLocation: function(type) {
 		// if (Modernizr.geolocation) {
 			// Modernizr takes a great deal of time with the whole library loaded. TODO: modularize this later
-			var geoOptions = {
-     		timeout: 10 * 1000,
-     		maximumAge: 3600000
-  		};
+			if (type == "initial") {
+				var geoOptions = {
+	     		timeout: 20 * 1000,
+	     		maximumAge: 120000
+	  		};
+	  	}
+  		else {
+				var geoOptions = {
+	     		timeout: 20 * 1000,
+	     		maximumAge: 40000
+	  		};
+  		}
+  		console.log(type)
+
   		var self = this;
 			navigator.geolocation.getCurrentPosition(function(position) 
 				{
-					self.showPosition(position, "initial");
+					console.log(type)
+					self.showPosition(position, type);
 				}.bind(this), self.showError.bind(this),geoOptions);
 				// need to bind because otherwise these uncalled functions will get bound to navigator, which ends up tied to the window object, giving us error when we call 'showInMap' in 'showPosition'
 		// }
@@ -40,22 +51,35 @@ UserLocation.prototype = {
     // TODO: fade this in and out instead of persisting
 	},
 	watchLocation: function(){
-		console.log("test");
 		var geoOptions = {
-   		timeout: 100000,
-   		maximumAge: 1000
+   		timeout: 30000,
+   		maximumAge: 5000,
+   		enableHighAccuracy: true
 		};
 		var self = this;
 		navigator.geolocation.watchPosition(function(position) 
 			{
-				self.showPosition(position, "checkin");
+				self.showPosition(position, "checkinWatch");
 			}.bind(this), this.showError.bind(this),geoOptions);
 	},
-	loadGoogleMapScript: function () {
+	loadGoogleMapScript: function (test) {
 		var script = document.createElement('script');
-		script.src = "http://maps.googleapis.com/maps/api/js?sensor=false&callback=init";
+		if (test == "initial"){
+			script.src = "http://maps.googleapis.com/maps/api/js?sensor=false&callback=init";
+			document.body.appendChild(script);
+		}
+		else {
+			if (this.localMap) {
+				this.marker.setPosition(new google.maps.LatLng(this.lat, this.lon));
+			}
+			else {
+			script.src = "http://maps.googleapis.com/maps/api/js?sensor=false&callback=init_checkin";
+			document.body.appendChild(script);
+			}
+
+		}
 		// what does 'sensor' do? callback calls the initialization
-		document.body.appendChild(script);
+		
 		// we need specific scripts from Google to allow the map object to work properly, thus the appending of this script
 	},
 	// showInMap: function(latlon) {
@@ -68,19 +92,29 @@ UserLocation.prototype = {
 		localStorage.authorizedGeoLocation = 1;
 		this.lat = position.coords.latitude;
 		this.lon = position.coords.longitude;
-		// loc.innerHTML = "<p>Latitude: " + this.lat + "<br>Longitude: " + this.lon + "</p>";
-		if (test == "initial"){
-			this.loadGoogleMapScript();
+		console.log (this.lat + " " + this.lon)
+		if (test == "initial" || test == "checkinWatch"){
+			this.loadGoogleMapScript(test);
+		}
+		else if (test == "checkinWatch") {
+			console.log(this.lat, this.lon);
+			console.log(position.coords.accuracy);
+			this.outputCoords(this.lat, this.lon);
 		}
 		else {
 			console.log(this.lat, this.lon);
+			console.log(position.coords.accuracy);
 			this.outputCoords(this.lat, this.lon);
+			document.getElementById("checkin_form").submit();			
 		}
 		// this.showInMap(position.coords.latitude + "," + position.coords.longitude);
 	},
 	outputCoords: function(lat,lon) {
 		document.getElementById("checkin_lat").value = lat;
 		document.getElementById("checkin_lon").value = lon;
+                console.log("hey")
+		console.log(this.lat);
+		console.log(document.getElementById("checkin_lon").value);
 	},
 	showError: function(error) {
 		// switch(*.code) will read the code of the error to see what gets returned
@@ -114,32 +148,46 @@ UserLocation.prototype = {
 	  distance_input.value = distance;
 	  position_input.value = widget.get('position');
 	},
-  googleMapInit: function () {
+  googleMapInit: function (type) {
+  	if (type == "initial") {
+  		lat = this.lat;
+  		lon = this.lon;
+  	}
+  	else {
+  		lat = document.getElementById("v_lat").value
+  		lon = document.getElementById("v_lon").value
+  	}
     var mapOptions = {
-			center: new google.maps.LatLng(this.lat, this.lon),
+			center: new google.maps.LatLng(lat, lon),
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
 			zoom: 14
 		};
-		var localMap = new google.maps.Map(document.getElementById('map'), mapOptions);
-		var location = new google.maps.LatLng(this.lat, this.lon);
-		// var populationOptions = {
-  //     strokeColor: '#FF0000',
-  //     strokeOpacity: 0.8,
-  //     strokeWeight: 2,
-  //     fillColor: '#FF0000',
-  //     fillOpacity: 0.35,
-  //     map: localMap,
-  //     center: location,
-  //     radius: 402.336, //quarter of a mile
-  //     editable: true,
-  //     draggable: false
-  //   };
-    // Add the circle for this city to the map.
-    // cityCircle = new google.maps.Circle(populationOptions);
+		this.localMap = new google.maps.Map(document.getElementById('map'), mapOptions);
+		var location = new google.maps.LatLng(lat, lon);
+
+		if (type == "checkin"){
+		  var circle = new google.maps.Circle({
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: '#FF0000',
+      fillOpacity: 0.35,
+      radius: 402.336,
+      map: this.localMap,
+      center: location
+ 			 });
+
+		  this.marker = new google.maps.Marker({
+		  	map: this.localMap,
+		  	position: new google.maps.LatLng(this.lat, this.lon)
+		  })
+		}
+		else {
+
 		DistanceWidget.prototype = new google.maps.MVCObject();
 		RadiusWidget.prototype = new google.maps.MVCObject();
 		RadiusWidget.prototype.distance_changed = function() {
-  		this.set('radius', this.get('distance') * 1000);
+  		this.set('radius', this.get('distance') * 1000); // to meters from km
 		};
 		RadiusWidget.prototype.center_changed = function() {
 		  var bounds = this.get('bounds');
@@ -199,7 +247,7 @@ UserLocation.prototype = {
 		  // Set the distance property for any objects that are bound to it
 		  this.set('distance', distance);
 		};
-		var distanceWidget = new DistanceWidget(localMap, location);
+		var distanceWidget = new DistanceWidget(this.localMap, location);
 		google.maps.event.addListener(distanceWidget, 'distance_changed', function() {
 			  this.displayInfo(distanceWidget);
 			}.bind(this));
@@ -209,13 +257,14 @@ UserLocation.prototype = {
 			  this.displayInfo(distanceWidget);
 			});
 			this.displayInfo(distanceWidget);
-	}	
+		}	
 
+	}
 };
 
-function DistanceWidget(localMap, location) {
-  this.set('map', localMap);
-  this.set('position', localMap.getCenter());
+function DistanceWidget(localmap, location) {
+  this.set('map', localmap);
+  this.set('position', localmap.getCenter());
 
   var marker = new google.maps.Marker({
     title: 'Move me!',
@@ -224,7 +273,7 @@ function DistanceWidget(localMap, location) {
 
   marker.bindTo('map', this);
   marker.bindTo('position', this);
-	var radiusWidget = new RadiusWidget(localMap, location);
+	var radiusWidget = new RadiusWidget(localmap, location);
 	radiusWidget.bindTo('map', this);
 	radiusWidget.bindTo('center', this, 'position');
 	// Bind to the radiusWidgets' distance property
