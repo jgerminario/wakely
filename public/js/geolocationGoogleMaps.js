@@ -57,7 +57,7 @@ UserLocation.prototype = {
    		enableHighAccuracy: true
 		};
 		var self = this;
-		navigator.geolocation.watchPosition(function(position) 
+		navigator.geolocation.getCurrentPosition(function(position) 
 			{
 				self.showPosition(position, "checkinWatch");
 			}.bind(this), this.showError.bind(this),geoOptions);
