@@ -1,5 +1,27 @@
 # enable :sessions
 use Rack::Flash
+# Anyplace to define Async classes to take some of the load off throughout?
+
+get '/styled' do
+	erb :indextest
+end
+
+get '/splash' do
+	erb :splash
+end
+
+get '/step1' do
+	erb :step1
+end
+
+get '/step2' do
+	erb :step2
+end
+
+get '/step3' do
+	erb :step3
+end
+
 
 get '/' do
 	# better to just keep certain info about them and run the rest in the background? Keep a session token with username in it, do rest of this later. Is it possible some of those session cookies would expire before others, or are they all cached the same time? Possible to do local storage for the access_token? How to find expiry time?

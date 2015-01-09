@@ -13,6 +13,7 @@ gem 'activesupport'
 # Extends core classes to give syntactic sugar, helps write clean code. See this for what it gives http://guides.rubyonrails.org/active_support_core_extensions.html. Individual elements need to be required one-by-one
 gem 'activerecord'
 gem 'rack-flash3'
+# gem 'sinatra-assetpack'
 
 gem 'oauth'
 gem 'geocoder'

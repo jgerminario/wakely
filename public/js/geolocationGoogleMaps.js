@@ -72,7 +72,6 @@ UserLocation.prototype = {
 				this.marker.setPosition(new google.maps.LatLng(this.lat, this.lon));
 			}
 			else if (test == "checkinWatch") {
-				console.log("hey ma")
 			// script.src = "http://maps.googleapis.com/maps/api/js?sensor=false&callback=init_checkin";
 			this.googleMapInit("checkinWatch")
 			document.body.appendChild(script);
@@ -144,18 +143,20 @@ UserLocation.prototype = {
 	  var distance_input = document.getElementById('distance-input');
 	  var position_input = document.getElementById('position-input');
 	  distance = Math.round(widget.get('distance')*0.621371*100)/100;
-	  info.innerHTML = 'Distance: ' + distance + ', walking time: ' + this.getWalkingTime(distance) + " minutes";
+	  info.innerHTML = '<h4>Distance: ' + distance + ' miles<br/>Walking time: ' + this.getWalkingTime(distance) + ' minutes</h4><button class="next_button">Next</button>';
 	  distance_input.value = distance;
 	  position_input.value = widget.get('position');
 	},
   googleMapInit: function (type) {
   	if (type == "initial") {
-  		lat = this.lat;
-  		lon = this.lon;
+  		var lat = this.lat;
+  		var lon = this.lon;
   	}
   	else {
-  		lat = document.getElementById("v_lat").value
-  		lon = document.getElementById("v_lon").value
+  		console.log("teyst")
+  		var lat = document.getElementById("v_lat").value
+  		var lon = document.getElementById("v_lon").value
+  		var dist = Number(document.getElementById("v_dist").value)
   	}
     var mapOptions = {
 			center: new google.maps.LatLng(lat, lon),
@@ -164,7 +165,6 @@ UserLocation.prototype = {
 		};
 		this.localMap = new google.maps.Map(document.getElementById('map'), mapOptions);
 		var location = new google.maps.LatLng(lat, lon);
-
 		if (type == "checkinWatch"){
 		  var circle = new google.maps.Circle({
       strokeColor: '#FF0000',
@@ -172,7 +172,7 @@ UserLocation.prototype = {
       strokeWeight: 2,
       fillColor: '#FF0000',
       fillOpacity: 0.35,
-      radius: 402.336,
+      radius: dist,
       map: this.localMap,
       center: location
  			 });
@@ -199,7 +199,8 @@ UserLocation.prototype = {
 		};
 		RadiusWidget.prototype.addSizer_ = function() {
 			var image = {
-				url: 'imgs/resizer.png',
+				url: 'imgs/arrow.svg',
+	      scale: 2,
 		    size: new google.maps.Size(50,50),
 		    origin: new google.maps.Point(0,0),
 		    anchor: new google.maps.Point(25,25)

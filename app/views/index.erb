@@ -10,6 +10,7 @@
 <% elsif @commitment %>
 		<input id="v_lat" type="hidden" value="<%= @commitment.location_verification.latitude %>">
 		<input id="v_lon" type="hidden" value="<%= @commitment.location_verification.longitude %>">
+		<input id="v_dist" type="hidden" value="<%= @commitment.location_verification.distance_in_meters %>">
 	<% if @success == "failure" %>
 		<p>Good try, but you have a little further to go. Check the map and keep walking!</p>
 	<% end %>
@@ -21,14 +22,20 @@
 	</form>
 	<% if @commitment.scheduled_for <= Time.now + 60*60*3 %><!-- 3 hours before -->
 		<h3>Time to get up and start the day!</h3>
-		<div id="map"></div>
+		<div id="map" class="map_div"><div class="loading">
+				<h3>Loading...</h3>
+				<img src="imgs/loader.gif">
+				</div></div>
 	<% else %>
 		<p>You can delete and reschedule up until three hours before your scheduled wakeup time:</p>
 		<form action="/commitment" method="POST">
 		  <input type="hidden" name="_method" value="DELETE">
 	    <input type="submit" id="delete_commitment" value="Delete scheduled wake up">
 		</form>
-		<div id="map"></div>
+		<div id="map" class="map_div"><div class="loading">
+				<h3>Loading...</h3>
+				<img src="imgs/loader.gif">
+				</div></div>
 	<% end %>
 <% else %>
 	<p>Hi <%= @name %></p>
@@ -43,7 +50,7 @@
 		</div>
 	<h3>How long do you want to walk?</h3>
 		<div id="info"></div>
-		<div id="map">
+		<div id="map" class="map_div">
 			<div class="loading">
 				<h3>Loading...</h3>
 				<img src="imgs/loader.gif">

@@ -12,14 +12,18 @@
   <title></title>
 </head>
 <body>
-  <header>
-    <h1>Wakely</h1>
-  </header>
-  <%= yield %>
- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
- <!-- <script type="text/javascript" src="/js/modernizr.js"></script> -->
- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
- <script type="text/javascript" src="/js/geolocationGoogleMaps.js"></script>
- <script type="text/javascript" src="/js/application.js"></script>
+	<div class="wrapper">
+	<span class="user">Hi, MrSaturn567</span>
+	<!-- <% if @name %>  -->
+	<!-- <%= @name %> -->
+	<!-- <% end %> -->
+		<%= yield %>
+	 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+	 <!-- <script type="text/javascript" src="/js/modernizr.js"></script> -->
+	 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+	 <script type="text/javascript" src="/js/geolocationGoogleMaps.js"></script>
+	 <script type="text/javascript" src="/js/application.js"></script>
+	 </div>
+	 <span class="wakely">wakely</span>
 </body>
 </html>
