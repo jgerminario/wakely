@@ -1,8 +1,3 @@
-<!-- <% if @tweet %>
-<div style="color: pink">
-	<p><%= @tweet %></p>
-</div>
-<% end %> -->
 <% if !@name %>
 	<a href="/auth" id="auth"><img src="imgs/twitter.png" alt="Sign in to Twitter"></a>
 <% elsif @success == "success" %>
@@ -38,7 +33,7 @@
 				</div></div>
 	<% end %>
 <% else %>
-	<p>Hi <%= @name %></p>
+<!-- 	<p>Hi <%= @name %></p>
 	<form action="/commitment" method="POST">
 	<h3>When do you want to wake up <%= Time.now.hour > 9 ? "tomorrow" : 
 	  "today" %>?</h3>
@@ -64,9 +59,6 @@
 		<input type="submit" value="Submit">
 		<p class="counter">140</p>
 	</form>
-	<h2>Your current location is</h2>
-	<div id="location">
-	</div>
-	<div id="message">Please click to allow geo location</div>
+	<div id="message">Please click to allow geo location</div> -->
 
 <% end %>

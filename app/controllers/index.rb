@@ -1,12 +1,18 @@
+# Flow of routes
+# Index (Authenticate) => /setup/new (splash), ajax after timeout to paste in step1, step2, step3 => '/' with confirmation, commitment if committed
+
+
 # enable :sessions
 use Rack::Flash
 # Anyplace to define Async classes to take some of the load off throughout?
 
-get '/styled' do
-	erb :indextest
-end
+# get '/styled' do
+# 	erb :indextest
+# end
 
 get '/splash' do
+	@auth = Authorization.find_by(platform: "twitter", access_token: session[:access_token].params[:oauth_token])
+	@name = @auth.username
 	erb :splash
 end
 
@@ -37,7 +43,7 @@ get '/' do
 	# flash[:tweet] #doesn't work, debug
   # @tweet = flash[:tweet]
   # TODO - add 'notified' to table for commitments for user when they return after an unsuccessful checkin
-  erb :index
+	erb :indextest
 end
 
 get '/clockwork' do
@@ -96,7 +102,7 @@ get '/users/new' do
 	args = {access_token: oauth_token, access_secret: oauth_token_secret, platform_user_id: user_info["id_str"], username: user_info["screen_name"]}
 	name = user_info["name"]
 	Twitter.add_authorization_in_db(args, "twitter", name)
-	redirect '/'
+	redirect '/splash'
 end
 	## Why is there only username and id information the first time?
 

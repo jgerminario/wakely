@@ -72,6 +72,18 @@ span.checkin_mobile {
     font-size: 24px;
 }
 
+button {
+    background-color: #d8fff0;
+    /*width: 100px;*/
+    padding: 5px 15px;
+    border-radius: 10px;
+    font-size: 30px;
+    text-align: center;
+    color: #003471;
+    display: block;
+    margin: 20px auto;
+}
+
 .left {
     float: left;
 }
@@ -139,9 +151,13 @@ span.user {
     padding-left: 5px;
 }
 
+.sp_item {
+    display: none;
+}
 
 .sp_sidetitle {
     padding-bottom: 32px;
+    display: none;
 }
 
 .sp_left h4 {
@@ -197,15 +213,7 @@ span.user {
 }
 
 .next_button {
-    background-color: #d8fff0;
-    /*width: 100px;*/
-    padding: 5px 15px;
-    border-radius: 10px;
-    font-size: 30px;
-    text-align: center;
-    color: #003471;
-    display: block;
-    margin: 20px auto;
+
 }
 
 /* Step 2 */

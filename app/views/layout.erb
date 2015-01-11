@@ -13,10 +13,9 @@
 </head>
 <body>
 	<div class="wrapper">
-	<span class="user">Hi, MrSaturn567</span>
-	<!-- <% if @name %>  -->
-	<!-- <%= @name %> -->
-	<!-- <% end %> -->
+	<% if @name %> 
+		<span class="user">Hi, <%= @name %></span>
+	<% end %>
 		<%= yield %>
 	 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 	 <!-- <script type="text/javascript" src="/js/modernizr.js"></script> -->

@@ -143,7 +143,7 @@ UserLocation.prototype = {
 	  var distance_input = document.getElementById('distance-input');
 	  var position_input = document.getElementById('position-input');
 	  distance = Math.round(widget.get('distance')*0.621371*100)/100;
-	  info.innerHTML = '<h4>Distance: ' + distance + ' miles<br/>Walking time: ' + this.getWalkingTime(distance) + ' minutes</h4><button class="next_button">Next</button>';
+	  info.innerHTML = '<h4>Distance: ' + distance + ' miles<br/>Walking time: ' + this.getWalkingTime(distance) + ' minutes</h4><button class="next_button" value="3">Next</button>';
 	  distance_input.value = distance;
 	  position_input.value = widget.get('position');
 	},
@@ -153,7 +153,6 @@ UserLocation.prototype = {
   		var lon = this.lon;
   	}
   	else {
-  		console.log("teyst")
   		var lat = document.getElementById("v_lat").value
   		var lon = document.getElementById("v_lon").value
   		var dist = Number(document.getElementById("v_dist").value)
