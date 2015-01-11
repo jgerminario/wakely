@@ -168,7 +168,7 @@ namespace :dynos do
       heroku.post_ps_scale(ENV['APP_NAME'], 'web', '1')
   end
   desc 'down web'
-  task :webup do
+  task :webdown do
       heroku = Heroku::API.new(:api_key => ENV['HEROKU_API_KEY'])
       heroku.post_ps_scale(ENV['APP_NAME'], 'web', '0')
   end
