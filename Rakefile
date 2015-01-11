@@ -1,7 +1,6 @@
 require 'rake'
 require 'heroku-api'
 
-
 require ::File.expand_path('../config/environment', __FILE__)
 
 #<$> Setting up rspec with Rake
@@ -147,6 +146,24 @@ end
 desc 'Start IRB with application environment loaded'
 task "console" do
   exec "irb -r./config/environment"
+end
+
+namespace :dynos do
+  desc 'up worker'
+  task up: :environment do
+      heroku = Heroku::API.new(:api_key => ENV['HEROKU_API_KEY'])
+      heroku.post_ps_scale(ENV['APP_NAME'], 'worker1', '1')
+      heroku.post_ps_scale(ENV['APP_NAME'], 'worker2', '1')
+    end
+  end
+
+  desc 'down worker'
+  task down: :environment do
+      heroku = Heroku::API.new(:api_key => ENV['HEROKU_API_KEY'])
+      heroku.post_ps_scale(ENV['APP_NAME'], 'worker1', '0')
+      heroku.post_ps_scale(ENV['APP_NAME'], 'worker2', '0')
+    end
+  end
 end
 
 
