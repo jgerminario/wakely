@@ -1,6 +1,7 @@
 require 'rake'
 require 'heroku-api'
 
+
 require ::File.expand_path('../config/environment', __FILE__)
 
 #<$> Setting up rspec with Rake
@@ -147,6 +148,7 @@ desc 'Start IRB with application environment loaded'
 task "console" do
   exec "irb -r./config/environment"
 end
+
 
 namespace :dynos do
   desc 'up worker'
