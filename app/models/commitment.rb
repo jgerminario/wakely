@@ -11,6 +11,7 @@ class Commitment < ActiveRecord::Base
 	class << self
 
 		def process_commitments
+			p "Triggering commitment check"
 			commitment = check_if_overdue
 			if commitment
 				if commitment.twitter_event.post

@@ -18,6 +18,10 @@ get '/' do
   erb :index
 end
 
+get '/clockwork' do
+	run_clockwork
+end
+
 # Helper routes
 
 # get '/request' do
