@@ -72,7 +72,7 @@ span.checkin_mobile {
     font-size: 24px;
 }
 
-button {
+button, .input-button {
     background-color: #d8fff0;
     /*width: 100px;*/
     padding: 5px 15px;
@@ -210,6 +210,10 @@ span.user {
 .step_title {
     line-height: 1.3;
     margin-bottom: 25px;
+}
+
+.main-title {
+    margin-top: 80px;
 }
 
 .next_button {
