@@ -2,7 +2,7 @@
 # Index (Authenticate) => /setup/new (splash), ajax after timeout to paste in step1, step2, step3 => '/' with confirmation, commitment if committed
 
 
-# enable :sessions
+enable :sessions
 use Rack::Flash
 # Anyplace to define Async classes to take some of the load off throughout?
 
@@ -39,11 +39,17 @@ get '/' do
 		@auth.save!
 		@commitment = get_current_commitment("twitter")
 		@success = flash[:commitment]
-	end
+		if !@commitment
+			erb :splash
+		else
+			erb :index
+		end
+	else
 	# flash[:tweet] #doesn't work, debug
   # @tweet = flash[:tweet]
   # TODO - add 'notified' to table for commitments for user when they return after an unsuccessful checkin
-	erb :indextest
+		erb :index
+	end
 end
 
 get '/clockwork' do
@@ -73,17 +79,10 @@ get '/clear' do
 	session.clear
 	redirect '/'
 end
-# <$> Look into Marshal.dump at some point http://devblog.songkick.com/2012/10/24/get-your-objects-out-of-my-session/
-# get '/test' do
-# 	Marshal.dump(session)
-# end
-# </$>
 
-
-# oAuth
-
+# NTS: Make sure to do all testing on dev.wake.ly:3000 or auth won't work
 get '/auth' do
-	clear_existing_cookies # may need to clear cookies in case of errors
+	# clear_existing_cookies # may need to clear cookies in case of errors
 	session[:request_token] = Twitter.get_request_token
 	redirect session[:request_token].authorize_url(oauth_callback: CALLBACK_URL)
 end
@@ -91,7 +90,6 @@ end
 get '/callback' do
 	# TODO: debug logout issue with twitter authorizations 401
 	session[:access_token] = session[:request_token].get_access_token(:oauth_verifier => params[:oauth_verifier])
-	session[:access_token]
 	redirect ('/users/new')
 end
 

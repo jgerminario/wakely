@@ -24,8 +24,6 @@ CONFIG_PATH = File.expand_path("../../../config/auth.yaml", __FILE__)
 	end
 
   def twitter_consumer_key
-  	see_env
-  	p ENV["TWITTER_KEY"]
   	if ENV["TWITTER_KEY"].nil? || ENV["TWITTER_SECRET"].nil?
   		raise "Twitter key not available"
   	end
@@ -37,7 +35,6 @@ CONFIG_PATH = File.expand_path("../../../config/auth.yaml", __FILE__)
 
   def get_request_token
 		request_token = twitter_consumer_key.get_request_token(:oauth_callback => CALLBACK_URL)
-		#first step is to request token and give user access option to opt into access grant 
 		request_token
   end
 

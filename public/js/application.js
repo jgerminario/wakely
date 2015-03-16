@@ -101,7 +101,9 @@ $(document).ready(function(){
 		},
 		nextStep: function (num) {
 			var self = this
-			$('#commitment').append("<div></div>").load('/step' + num + ' #step' + num, function(data){
+			var $newDiv = $('<div></div>');
+			$('#commitment').append($newDiv);
+			$newDiv.load('/step' + num + ' #step' + num, function(data){
 				if (num == 2){
 					self.userLocation.getLocation("initial");
 				}
