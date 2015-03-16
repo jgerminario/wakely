@@ -24,6 +24,7 @@ require 'rack-flash'
 require 'sidekiq'
 require 'redis'
 require 'clockwork'
+# require 'sinatra-assetpack'
 
 
 require 'sinatra'

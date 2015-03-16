@@ -1,0 +1,23 @@
+	<div id="step1">
+	<div>
+		<img src="/imgs/time.svg" class="svg step_img" alt="clock" />
+		<h3 class="step_title">When do you want to <br /> wake up <%= Time.now.hour > 9 ? "tomorrow" : "today" %>?</h3>
+		<div id="time" class="time_area">
+			<input type="text" class="step_time" name="hour" placeholder="HH" value="5" /><span class="am">:</span><input type="text" class="step_time" type="text" name="minute" placeholder="MM" value="00" / >
+			<!-- <input id="ampm_input" name="ampm" type="hidden" value="am"> -->
+			<span class="am">am</span>
+			<!-- <button type="button" id="ampm" value="am">am</button> -->
+		</div>
+		<button type="button" id="step_next2" value="2" class="next_button">Next</button>
+		</div>
+	</div>
+
+
+
+
+	<!-- 	<div id="message">Please click to allow geo location</div> -->
+<!-- 
+	<img class="bg" src="/imgs/bed.jpg">
+	<h1 class="hp_title">Hello,</h1>
+	<h2 class="hp_subtitle">future early bird</h2>
+	<a href="/auth" id="auth"><img class="hp_auth" src="imgs/twitter.png" alt="Sign in to Twitter"></a>

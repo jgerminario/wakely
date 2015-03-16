@@ -1,5 +1,33 @@
-# enable :sessions
+# Flow of routes
+# Index (Authenticate) => /setup/new (splash), ajax after timeout to paste in step1, step2, step3 => '/' with confirmation, commitment if committed
+
+
+enable :sessions
 use Rack::Flash
+# Anyplace to define Async classes to take some of the load off throughout?
+
+# get '/styled' do
+# 	erb :indextest
+# end
+
+get '/splash' do
+	@auth = Authorization.find_by(platform: "twitter", access_token: session[:access_token].params[:oauth_token])
+	@name = @auth.username
+	erb :splash
+end
+
+get '/step1' do
+	erb :step1
+end
+
+get '/step2' do
+	erb :step2
+end
+
+get '/step3' do
+	erb :step3
+end
+
 
 get '/' do
 	# better to just keep certain info about them and run the rest in the background? Keep a session token with username in it, do rest of this later. Is it possible some of those session cookies would expire before others, or are they all cached the same time? Possible to do local storage for the access_token? How to find expiry time?
@@ -11,11 +39,21 @@ get '/' do
 		@auth.save!
 		@commitment = get_current_commitment("twitter")
 		@success = flash[:commitment]
-	end
+		if !@commitment
+			erb :splash
+		else
+			erb :index
+		end
+	else
 	# flash[:tweet] #doesn't work, debug
   # @tweet = flash[:tweet]
   # TODO - add 'notified' to table for commitments for user when they return after an unsuccessful checkin
-  erb :index
+		erb :index
+	end
+end
+
+get '/clockwork' do
+	run_clockwork
 end
 
 # Helper routes
@@ -41,17 +79,10 @@ get '/clear' do
 	session.clear
 	redirect '/'
 end
-# <$> Look into Marshal.dump at some point http://devblog.songkick.com/2012/10/24/get-your-objects-out-of-my-session/
-# get '/test' do
-# 	Marshal.dump(session)
-# end
-# </$>
 
-
-# oAuth
-
+# NTS: Make sure to do all testing on dev.wake.ly:3000 or auth won't work
 get '/auth' do
-	clear_existing_cookies # may need to clear cookies in case of errors
+	# clear_existing_cookies # may need to clear cookies in case of errors
 	session[:request_token] = Twitter.get_request_token
 	redirect session[:request_token].authorize_url(oauth_callback: CALLBACK_URL)
 end
@@ -59,7 +90,6 @@ end
 get '/callback' do
 	# TODO: debug logout issue with twitter authorizations 401
 	session[:access_token] = session[:request_token].get_access_token(:oauth_verifier => params[:oauth_verifier])
-	session[:access_token]
 	redirect ('/users/new')
 end
 
@@ -70,7 +100,7 @@ get '/users/new' do
 	args = {access_token: oauth_token, access_secret: oauth_token_secret, platform_user_id: user_info["id_str"], username: user_info["screen_name"]}
 	name = user_info["name"]
 	Twitter.add_authorization_in_db(args, "twitter", name)
-	redirect '/'
+	redirect '/splash'
 end
 	## Why is there only username and id information the first time?
 
